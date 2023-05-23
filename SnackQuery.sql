@@ -3,8 +3,6 @@
 SELECT 
   	A.SnackItem AS [Snack Name],
   	B.FK_ItemId AS [Id],
-
-    -- Extracting the month and year from the business date
   	MONTH(B.BusinessDate) AS [Month],
   	YEAR(B.BusinessDate) AS [Year],
   
