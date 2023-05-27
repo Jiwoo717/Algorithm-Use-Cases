@@ -1,11 +1,18 @@
 SELECT
+    -- Location information
     L.EncryptedName AS [Site],
     S.NewLocationId AS [Site ID],
     A.TransactionDate AS [Business Date],
+
+    -- Employee information
     E.NewEmployeeId AS [Emp ID],
     CONCAT(E.FirstName, ' ', E.LastName) AS [Emp Full Name],
+
+    -- Product information
     A.ProductCode AS [Product Code],
     P.NewProductName AS [Product Name],
+
+    -- Aggregating sales data
     SUM(A.QuantitySold) AS [Total Quantity Sold],
     SUM(A.Revenue) AS [Total Revenue]
 FROM
@@ -23,6 +30,7 @@ WHERE
     AND A.TransactionDate BETWEEN '2023-06-01' AND '2023-06-07'
     AND A.LocationID IN (100, 200, 300)
 GROUP BY
+    -- Grouping by relevant fields
     L.EncryptedName,
     S.NewLocationId,
     A.TransactionDate,
@@ -31,5 +39,6 @@ GROUP BY
     A.ProductCode,
     P.NewProductName
 ORDER BY
+    -- Sorting by location and employee name
     S.NewLocationId,
     CONCAT(E.FirstName, ' ', E.LastName);
