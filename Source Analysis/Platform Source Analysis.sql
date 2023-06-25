@@ -23,28 +23,48 @@
     SELECT DISTINCT EXTERNAL_ORDER_ID, ORDER_SOURCE, PAYMENTS, TIME_PLACED
     FROM WAREHOUSE.ORDERS
     WHERE TIME_PLACED BETWEEN '2023-1-01' AND '2023-05-01'
-)
+    )
 
-, PaymentsFlattened AS (
+    , PaymentsFlattened AS (
+        SELECT
+            ORDER_SOURCE,
+            EXTRACT(MONTH FROM TIME_PLACED) AS month,
+            EXTRACT(YEAR FROM TIME_PLACED) AS year,
+            PAYMENT.value:"amount"::FLOAT AS payment_amount
+        FROM
+            DistinctOrders,
+            LATERAL FLATTEN(input => DistinctOrders.PAYMENTS) AS PAYMENT
+    )
+
     SELECT
         ORDER_SOURCE,
-        EXTRACT(MONTH FROM TIME_PLACED) AS month,
-        EXTRACT(YEAR FROM TIME_PLACED) AS year,
-        PAYMENT.value:"amount"::FLOAT AS payment_amount
+        month,
+        year,
+        TO_VARCHAR(month, '00') || '-' || TO_VARCHAR(year) AS business_date,
+        SUM(payment_amount) AS total_payments
     FROM
-        DistinctOrders,
-        LATERAL FLATTEN(input => DistinctOrders.PAYMENTS) AS PAYMENT
-)
+        PaymentsFlattened
+    GROUP BY
+        ORDER_SOURCE, month, year
+    ORDER BY
+        ORDER_SOURCE, year, month;
 
-SELECT
-    ORDER_SOURCE,
-    month,
-    year,
-    TO_VARCHAR(month, '00') || '-' || TO_VARCHAR(year) AS business_date,
-    SUM(payment_amount) AS total_payments
-FROM
-    PaymentsFlattened
-GROUP BY
-    ORDER_SOURCE, month, year
-ORDER BY
-    ORDER_SOURCE, year, month;
+
+-- Requesting platform usage during given time period. 
+    -- Platform Usage
+    WITH DistinctOrders AS (
+    SELECT DISTINCT EXTERNAL_ORDER_ID, ORDER_SOURCE, PLATFORM_USED
+    FROM WAREHOUSE.ORDERS
+    WHERE TIME_PLACED BETWEEN '2023-1-01' AND '2023-05-01'
+    )
+
+    SELECT
+        ORDER_SOURCE,
+        PLATFORM_USED,
+        COUNT(*) AS order_count
+    FROM
+        DistinctOrders
+    GROUP BY
+        ORDER_SOURCE, PLATFORM_USED
+    ORDER BY
+        ORDER_SOURCE, order_count DESC;
