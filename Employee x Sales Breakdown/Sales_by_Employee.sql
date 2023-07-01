@@ -1,3 +1,6 @@
+-- Query aims to breakdown the Sales by the Employee ID, additionally by Location of Store.
+
+
 SELECT
     -- Location information
     L.EncryptedName AS [Site],
