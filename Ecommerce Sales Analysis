@@ -1,0 +1,60 @@
+-- Snowflake DB
+-- The following SQL query demonstrates how I extracted and aggregated data
+-- payment details from an ecommerce brand
+
+
+--Extracting some JSON columns and joining relevant data
+
+WITH FlattenedData AS (
+    SELECT DISTINCT
+        A.OrderID AS ID,
+        A.OrderDate AS CREATED_AT,
+        A.MerchantID,
+        C.MerchantName AS Store_Name,
+        A.CustomerID AS GUEST_ID,
+        A.OrderSource AS ORDER_SOURCE,
+        B.FirstName AS FNAME,
+        B.LastName AS LNAME,
+        B.Email AS EMAIL,
+        B.PhoneNumber AS PHONE,
+        TO_DOUBLE(JSON_EXTRACT_PATH_TEXT(PAYMENT.value, 'amount')) AS amount,
+        JSON_EXTRACT_PATH_TEXT(PAYMENT.value, 'type') AS payment_type
+    FROM ECOMMERCE_DB.ORDER_DATA.ORDERS A
+    INNER JOIN ECOMMERCE_DB.CUSTOMER_DATA.GUESTS B
+    ON A.CustomerID = B.CustomerID
+    INNER JOIN ECOMMERCE_DB.MERCHANT_DATA.MERCHANTS C
+    ON A.MerchantID = C.MerchantID
+    JOIN LATERAL FLATTEN(input => A.PaymentDetails) AS PAYMENT ON TRUE
+    WHERE DATE_TRUNC('DAY', A.OrderDate) BETWEEN '2023-01-01' AND '2023-10-01'
+)
+
+-- Now, we aggregate payment data and group by identifier fields
+
+SELECT 
+    ID,
+    MERCHANT_ID,
+    Store_Name,
+    CREATED_AT,
+    GUEST_ID,
+    ORDER_SOURCE,
+    FNAME,
+    LNAME,
+    EMAIL,
+    PHONE,
+    SUM(amount) AS TOTAL_AMOUNT,
+    PAYMENT_TYPE
+FROM FlattenedData
+GROUP BY
+    ID,
+    MERCHANT_ID,
+    Store_Name,
+    CREATED_AT,
+    GUEST_ID,
+    ORDER_SOURCE,
+    FNAME,
+    LNAME,
+    EMAIL,
+    PHONE,
+    PAYMENT_TYPE
+ORDER BY 
+    TOTAL_AMOUNT DESC, PAYMENT_TYPE;
