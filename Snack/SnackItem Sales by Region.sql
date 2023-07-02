@@ -1,5 +1,5 @@
 -- This query retrieves sales data for some snack items. Although in reality I used it for something else. The "snack" replacement was to obfuscate the query for public viewing. This query aims to retrieve the vendor, region, type of snack, and various sales metrics.
-
+-- Problem statement: We need to look at the Sales of Snack items by the Region of Sale. Will help us determine which regiion is struggling.
 SELECT 
   	A.SnackItem AS [Snack Name],
   	B.FK_ItemId AS [Id],
