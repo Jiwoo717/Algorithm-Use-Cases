@@ -1,6 +1,7 @@
 # Miscellaneous SQL Queries Collection
 
-Preface: Every query in this repository has undergone rigorous obfuscation to guarantee security and maintain confidentiality. Please interpret the queries solely based on its functionality.
+Preface: Every query in this repository has undergone rigorous obfuscation to guarantee security and maintain confidentiality. Please interpret the queries solely based on its' functionality.
+
 This repository houses a collection of miscellaneous SQL queries that I've written over time varying in its' purpose. Included in this collection you'll find everything from simple SELECT statements to, JOIN operations, and aggregate functions. This repository serves as a personal reference/library and might be useful for others looking for SQL examples or inspiration.
 
 ## Table of Contents
@@ -8,8 +9,6 @@ This repository houses a collection of miscellaneous SQL queries that I've writt
 - [Introduction](#introduction)
 - [Queries Overview](#queries-overview)
 - [Usage](#usage)
-- [Contributions](#contributions)
-- [License](#license)
 
 ## Introduction
 
