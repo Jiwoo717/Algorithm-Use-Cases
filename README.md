@@ -27,3 +27,7 @@ The use of these queries varies in syntax because I've written the queries in a 
 1. Clone the repository:
    ```bash
    git clone https://github.com/Jiwoo717/SQL-Projects.git
+
+
+
+<img src="https://github-readme-stats.vercel.app/api?username=Jiwoo717&&show_icons=true&count_private=true&theme=radical">
