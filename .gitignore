@@ -1,4 +1,5 @@
 # Ignore attribute change
-.gitattribute
+.gitattributes
+
 # Ignore OS file
 .DS_Store
