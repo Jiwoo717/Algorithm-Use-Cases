@@ -1,4 +1,4 @@
--- This query retrieves sales data for snack items, including details about the vendor, region, type of snack, and various sales metrics.
+-- This query retrieves sales data for some snack items. Although in reality I used it for something else. The "snack" replacement was to obfuscate the query for public viewing. This query aims to retrieve the vendor, region, type of snack, and various sales metrics.
 
 SELECT 
   	A.SnackItem AS [Snack Name],
