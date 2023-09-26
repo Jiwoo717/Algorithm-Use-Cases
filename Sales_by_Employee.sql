@@ -16,13 +16,13 @@ SELECT
     SUM(A.QuantitySold) AS [Total Quantity Sold],
     SUM(A.Revenue) AS [Total Revenue]
 FROM
-    MyDatabase.dbo.SalesTransactions A
-    LEFT JOIN MyDatabase.dbo.Employees E
+    MyDatabase.SalesTransactions A
+    LEFT JOIN MyDatabase.Employees E
         ON A.EmployeeID = E.EmployeeID
         AND A.LocationID = E.LocationID
     LEFT JOIN MyDatabase.dbo.Locations L
         ON A.LocationID = L.LocationID
-    LEFT JOIN MyDatabase.dbo.Products P
+    LEFT JOIN MyDatabase.Products P
         ON A.ProductCode = P.ProductCode
         AND A.LocationID = P.LocationID
 WHERE
