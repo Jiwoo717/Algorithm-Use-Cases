@@ -43,8 +43,6 @@ SELECT
 FROM dbo.ItemSales B
 	LEFT JOIN dbo.ItemByLocation A 
 	ON B.FK_Id = A.FK_Id AND B.FK_ItemId = A.FK_ItemId
-	INNER JOIN dbo.dpvHstSalesTotals C
-  	ON B.BusinessDate = C.BusinessDate AND B.VendorId = C.VendorId
 
 WHERE B.BusinessDate BETWEEN '2021-01-01' AND '2021-12-30'
 
