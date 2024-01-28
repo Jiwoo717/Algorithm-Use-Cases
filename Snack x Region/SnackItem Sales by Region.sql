@@ -6,7 +6,6 @@ SELECT
   	MONTH(B.BusinessDate) AS [Month],
   	YEAR(B.BusinessDate) AS [Year],
   
-    -- Mapping Vendor IDs to their respective locations
   	CASE B.VendorId
   		WHEN 2 THEN 'Riverside'
   		WHEN 3 THEN 'Corona'
@@ -15,29 +14,27 @@ SELECT
   		ELSE 'Unknown'
   	END AS [Vendor Name],
   
-    -- Categorizing vendors into regions
   	CASE
   		WHEN B.VendorId IN (2, 3) THEN 'Inland'
   		WHEN B.VendorId IN (5, 6) THEN 'Coast'
   		ELSE 'Unknown'
   	END AS [Region],
-  
-    -- Categorizing snack items based on their type
+
   	CASE
   		WHEN A.Type LIKE '%Chip%' THEN 'Chips'
 		WHEN A.Type LIKE '%Candy%' THEN 'Candy'
   		ELSE 'False'
   	END AS [Type],
   
-    -- Calculating the average monthly sales per vendor
+    -- Average Monthly Sales per vendor
   	SUM(B.ItemCount) / (DATEDIFF(month, MIN(B.BusinessDate), MAX(B.BusinessDate)) + 1) / COUNT(DISTINCT B.VendorId) AS [Monthly AVG],
   
-    -- Calculating the total quantity, gross sales, and order count
+    -- Total quantity, gross sales, order count
   	SUM(B.ItemCount) AS [QTY],
   	SUM(B.Amount) AS [Gross Sales],
   	SUM(B.Orders) AS [Order Count],
   
-    -- Calculating the Rate of Sale (ROS)
+    -- Rate of Sale (ros)
   	SUM(B.ItemCount) / SUM(B.Orders) * 100 AS [ROS]
 
 FROM dbo.ItemSales B
